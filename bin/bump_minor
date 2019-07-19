@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+VERSION_FILE=$(find . -path "*/src/version.edn")
+echo "Using version file $VERSION_FILE"
+MAJOR=$( (grep ":major" | sed -E 's/^\s*:major\s*([0-9]+)$/\1/') < "$VERSION_FILE")
+MINOR=$( (grep ":minor" | sed -E 's/^\s*:minor\s*([0-9]+)$/\1/') < "$VERSION_FILE")
+PATCH=$( (grep ":patch" | sed -E 's/^\s*:patch\s*([0-9]+)$/\1/') < "$VERSION_FILE")
+echo "Version: "
+echo "         Major: $MAJOR"
+echo "         Minor: $MINOR"
+echo "         Patch: $PATCH"
+NEW_PATCH=$((PATCH + 1))
+echo "         New patch: $NEW_PATCH"
+echo -e "{\n :major $MAJOR\n :minor $MINOR\n :patch $NEW_PATCH\n}\n" > "$VERSION_FILE"
